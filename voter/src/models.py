@@ -12,6 +12,19 @@ class Account(db.Model):
     voter_id = db.Column(db.Integer, db.ForeignKey(
         'voters.id'), nullable=False)
 
+    def __init__(self, username: str, party_affiliation: str, voter_id: int):
+        self.username = username
+        self.party_affiliation = party_affiliation
+        self.voter_id = voter_id
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'party_affliation': self.party_affiliation,
+            'voter_id': self.voter_id
+        }
+
 
 class Ballot(db.Model):
     __tablename__ = 'ballots'
@@ -25,14 +38,13 @@ class Ballot(db.Model):
 
     def __init__(self, voter_id: int, voted_for: str):
         self.voter_id = voter_id
-        self.voter_for= voted_for
-        
+        self.voter_for = voted_for
 
     def serialize(self):
         return {
             'id': self.id,
-            'voter_id' : self.voter_id,
-            'voted_for' : self.voted_for,
+            'voter_id': self.voter_id,
+            'voted_for': self.voted_for,
             'voted_on': self.voted_on.isoformat()
         }
 
@@ -83,16 +95,13 @@ class Voter(db.Model):
     name = db.Column(db.String(128), nullable=False)
     age = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, name: str, voter_id: int, age: int):
+    def __init__(self, name: str, age: int):
         self.name = name
-        self.voter_id = voter_id
         self.age = age
 
     def serialize(self):
         return {
             'id': self.id,
-            'name' : self.name,
+            'name': self.name,
             'age': self.age
         }
-
-    

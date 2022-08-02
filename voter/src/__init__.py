@@ -31,8 +31,9 @@ def create_app(test_config=None):
     db.init_app(app)
     migrate = Migrate(app, db)
 
-    from .api import ballots, voters
+    from .api import ballots, voters, accounts
     app.register_blueprint(ballots.bp)
     app.register_blueprint(voters.bp)
+    app.register_blueprint(accounts.bp)
 
     return app
