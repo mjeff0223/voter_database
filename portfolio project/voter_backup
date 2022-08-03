@@ -1,0 +1,734 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.1
+-- Dumped by pg_dump version 14.1
+
+-- Started on 2022-08-03 12:49:41 UTC
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 213 (class 1259 OID 41356)
+-- Name: accounts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.accounts (
+    id integer NOT NULL,
+    username character varying(128) NOT NULL,
+    password character varying(128) NOT NULL,
+    party_affiliation character varying(128) NOT NULL,
+    voter_id integer NOT NULL
+);
+
+
+ALTER TABLE public.accounts OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 41355)
+-- Name: accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.accounts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.accounts_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3387 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.accounts_id_seq OWNED BY public.accounts.id;
+
+
+--
+-- TOC entry 209 (class 1259 OID 41326)
+-- Name: alembic_version; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.alembic_version (
+    version_num character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.alembic_version OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 41370)
+-- Name: ballots; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.ballots (
+    id integer NOT NULL,
+    voter_id integer NOT NULL,
+    voted_for character varying(128) NOT NULL,
+    voted_on timestamp without time zone
+);
+
+
+ALTER TABLE public.ballots OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 41369)
+-- Name: ballots_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.ballots_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ballots_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3388 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: ballots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.ballots_id_seq OWNED BY public.ballots.id;
+
+
+--
+-- TOC entry 211 (class 1259 OID 41342)
+-- Name: candidates; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.candidates (
+    id integer NOT NULL,
+    candidate_name character varying(128) NOT NULL,
+    party character varying(128)
+);
+
+
+ALTER TABLE public.candidates OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 41341)
+-- Name: candidates_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.candidates_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.candidates_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3389 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: candidates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.candidates_id_seq OWNED BY public.candidates.id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 41382)
+-- Name: districts; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.districts (
+    id integer NOT NULL,
+    state character varying(128),
+    voter_id integer NOT NULL
+);
+
+
+ALTER TABLE public.districts OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 41381)
+-- Name: districts_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.districts_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.districts_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3390 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: districts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.districts_id_seq OWNED BY public.districts.id;
+
+
+--
+-- TOC entry 222 (class 1259 OID 49407)
+-- Name: pacs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.pacs (
+    id integer NOT NULL,
+    name text NOT NULL,
+    issue text,
+    voter_id integer NOT NULL
+);
+
+
+ALTER TABLE public.pacs OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 49406)
+-- Name: pacs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.pacs_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pacs_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3391 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: pacs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.pacs_id_seq OWNED BY public.pacs.id;
+
+
+--
+-- TOC entry 218 (class 1259 OID 41405)
+-- Name: pacs_voters; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.pacs_voters (
+    voter_id integer NOT NULL,
+    pac_id integer NOT NULL
+);
+
+
+ALTER TABLE public.pacs_voters OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 49398)
+-- Name: voters; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.voters (
+    id integer NOT NULL,
+    name text NOT NULL,
+    age integer NOT NULL
+);
+
+
+ALTER TABLE public.voters OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 49397)
+-- Name: voters_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.voters_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.voters_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 3392 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: voters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.voters_id_seq OWNED BY public.voters.id;
+
+
+--
+-- TOC entry 3200 (class 2604 OID 41359)
+-- Name: accounts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accounts ALTER COLUMN id SET DEFAULT nextval('public.accounts_id_seq'::regclass);
+
+
+--
+-- TOC entry 3201 (class 2604 OID 41373)
+-- Name: ballots id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ballots ALTER COLUMN id SET DEFAULT nextval('public.ballots_id_seq'::regclass);
+
+
+--
+-- TOC entry 3199 (class 2604 OID 41345)
+-- Name: candidates id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.candidates ALTER COLUMN id SET DEFAULT nextval('public.candidates_id_seq'::regclass);
+
+
+--
+-- TOC entry 3202 (class 2604 OID 41385)
+-- Name: districts id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.districts ALTER COLUMN id SET DEFAULT nextval('public.districts_id_seq'::regclass);
+
+
+--
+-- TOC entry 3204 (class 2604 OID 49410)
+-- Name: pacs id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pacs ALTER COLUMN id SET DEFAULT nextval('public.pacs_id_seq'::regclass);
+
+
+--
+-- TOC entry 3203 (class 2604 OID 49401)
+-- Name: voters id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.voters ALTER COLUMN id SET DEFAULT nextval('public.voters_id_seq'::regclass);
+
+
+--
+-- TOC entry 3372 (class 0 OID 41356)
+-- Dependencies: 213
+-- Data for Name: accounts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.accounts (id, username, password, party_affiliation, voter_id) FROM stdin;
+1	stephen75	fa95ba3f4427c08de5437840c9e4e3b73b1d0ace0e8f3eb45061c5121b2d475f1327e84b0958fd39767149534f5c2a1fcf4740dbca57c4ff6147f357ad5d70fc	Independent	1
+2	jennifer37	d43a3bbb6400e05fa60a5cf7654d3981f45190f3a0fd53097b29f458be006e2b6d9e98eae5e7cbcd8c8c8abc0c9aa959d5a2bd9a0ee318f945e211f86d9edb8d	Independent	2
+3	anthony43	5d78811c2471fb475c42ab5d92803a937b84fe486e6539fa3a71b49884820ca6e7d22f2288691640ae9c897969d92871114cdafaaa5d35084c9b44baf0b3eaa5	Independent	3
+4	david7	9ab1760061108e862a1557c41325927370392b9a0f37f588687d8db53e5618fea95e71a955fa1b7880c7a9a13dbbf4a95c68154e4c9a129742252440e2eca9be	Democrat	4
+5	andrea45	36f2a43e0176ca87a8bf28de7fe3768ac694d75d7061f30688d2709f3a71927421f75f985b48d8923acfe636d794ec086e986d13049c7361e6fde742b95a17aa	Independent	5
+6	benjamin105	6e5716522c8dc7f5d4318ba289dec4db5088a05c9e970b3879dfc0a78b8666bf2d1503bd206ac601cabf8d6b2fd25bfc5a6cf15f050fabbc1e6e065194872579	Republican	6
+7	karen39	d02c6ce713a2fa8fe3d3c9ba9ef84efbf2d0fa211cc41110de1b294e8d673e2fbd501a1edde011ae2c5e2b6fbafe67db49c75a1af684a95004a782b4ba06d2f1	Independent	7
+8	kimberly75	8cebc95664e993cafce19242215164be608f7dded655493a2073fb39772cf8e926843accc41eb5feb74124d9af133fcf27d32cc741b425c2114a43d7b5f78dd6	Democrat	8
+9	danny133	dd6bcaf448e4fe7c5a85e02076f565b6c85b1723854aaa1b0947de3f427c8dd612dc6079679f5fb11a8935b76fe5efd18b795ea0bbf45c3ca355b5e388bf4d95	Republican	9
+10	danielle14	0392ead2f8ac0078fee90987e8ab19f4507ea81d8a518cd571745cfe35ab627ed33c34c327c94c3be08bae353071d30ac32ded440aa474ad63f376e05acf24f4	Independent	10
+11	daniel49	175cffd69e6f80ba4d4705881a4d3b79c9e03db451b48e3b06108f0a5a33fb6bdefb3f4b5c8e012b4738efc706251d8e27c463da12b8dfc328a50cdce9477683	Republican	11
+12	shawn89	d8276bb8c2ddcaec0303ed08eac9a9189e2d1270c519b4dd142d2652e40ca85c72b8b06c41e20cff87e953ea382ab481039a480a88204f69a9e8ba23e4909964	Republican	12
+13	melvin32	5ec2716fcd4c5556688b9ef153dcac2f47449993ee02911bb68e434e1d950f043988d4d255195835b5ab345f497730440aaab22f1deb2892e6e5717177d098ea	Independent	13
+14	timothy125	019110242d37f2ab94faf8c11ed6db721c2998d7dc1fcd4e332aef6f2485ece2116a1f8a6632eb633c8a20bf91dcff2a87773cb9298381f0e2254096c06e25b0	Democrat	14
+15	richard145	3841cbcfc9ed39f93e3b7f268f1984531b9c8ebc87266b5ccfd0aef511f205f70578d46091cc564e0cc18c844a666410d19ddba5477db7013e16befab45b7f6f	Independent	15
+16	courtney20	921783fb768a3804efbcce853606fe849d9670f5d1f9ab9ca99504a14bcbca8ed59124ddf9244e7a7820d30e20e2ba84c93f395b18e283ad3abe5630e2d672e0	Democrat	16
+17	tammy47	dd722779863feccc0bf2a911a53d69c2c3f17672d4613a61a7bd68399371f00418ebefeeadd729f6517a2bbe9d45282d74f3a94765138de842716a155c5d3098	Independent	17
+18	charles146	4312e94931890542ac3168fea901ffd9905f46473ae152a8f210f845ad989e6d02442bea452a5a0260fba83bc071380c8bea7949dc23c59d2d569af982121684	Democrat	18
+19	steven54	5577472af8dcbeb3d0fc50998fb73d2287c7aea41129791600024d80c3d8a35af0d478ab3b1ce70928c8bbd805ccf0b6331e3ab89177eb2ab2a01f086158ec18	Democrat	19
+20	kristina41	95db89fe8bee302c964beb440503318f5b645046eecf63b49c03927c55bfd45a64b56baf2dd09acb5b55cd8ed71f0d28c44dbbcb79d15a267f5d60f5570bb38b	Democrat	20
+\.
+
+
+--
+-- TOC entry 3368 (class 0 OID 41326)
+-- Dependencies: 209
+-- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.alembic_version (version_num) FROM stdin;
+d4e6ee0d4ab0
+\.
+
+
+--
+-- TOC entry 3374 (class 0 OID 41370)
+-- Dependencies: 215
+-- Data for Name: ballots; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ballots (id, voter_id, voted_for, voted_on) FROM stdin;
+1	1	Dwayne Johnson	2022-07-27 20:16:55.573986
+2	2	Andrew Yang	2022-07-27 20:16:55.573986
+3	3	Dwayne Johnson	2022-07-27 20:16:55.573986
+4	4	Lebron James	2022-07-27 20:16:55.573986
+5	5	Dwayne Johnson	2022-07-27 20:16:55.573986
+6	6	Lebron James	2022-07-27 20:16:55.573986
+7	7	Andrew Yang	2022-07-27 20:16:55.573986
+8	8	Dwayne Johnson	2022-07-27 20:16:55.573986
+9	9	Lebron James	2022-07-27 20:16:55.573986
+10	10	Dwayne Johnson	2022-07-27 20:16:55.573986
+11	11	Dwayne Johnson	2022-07-27 20:16:55.573986
+12	12	Andrew Yang	2022-07-27 20:16:55.573986
+13	13	Lebron James	2022-07-27 20:16:55.573986
+14	14	Lebron James	2022-07-27 20:16:55.573986
+15	15	Andrew Yang	2022-07-27 20:16:55.573986
+16	16	Lebron James	2022-07-27 20:16:55.573986
+17	17	Lebron James	2022-07-27 20:16:55.573986
+18	18	Dwayne Johnson	2022-07-27 20:16:55.573986
+19	19	Lebron James	2022-07-27 20:16:55.573986
+20	20	Dwayne Johnson	2022-07-27 20:16:55.573986
+\.
+
+
+--
+-- TOC entry 3370 (class 0 OID 41342)
+-- Dependencies: 211
+-- Data for Name: candidates; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.candidates (id, candidate_name, party) FROM stdin;
+1	Andrew Yang	Democrat
+2	Lebron James	Independent
+3	Dwayne Johnson	Republican
+\.
+
+
+--
+-- TOC entry 3376 (class 0 OID 41382)
+-- Dependencies: 217
+-- Data for Name: districts; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.districts (id, state, voter_id) FROM stdin;
+1	South Dakota	1
+2	Rhode Island	2
+3	Washington	3
+4	California	4
+5	Utah	5
+6	Oregon	6
+7	Oregon	7
+8	Utah	8
+9	Pennsylvania	9
+10	New York	10
+11	Tennessee	11
+12	Washington	12
+13	Georgia	13
+14	Kentucky	14
+15	Indiana	15
+16	Arkansas	16
+17	Virginia	17
+18	Florida	18
+19	New Hampshire	19
+20	Michigan	20
+\.
+
+
+--
+-- TOC entry 3381 (class 0 OID 49407)
+-- Dependencies: 222
+-- Data for Name: pacs; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pacs (id, name, issue, voter_id) FROM stdin;
+1	Religious Freedom	Social	20
+2	Crypto For All	Economic	19
+3	Freedom From Religion	Foreign Policy	18
+4	End all Wars	Foreign Policy	17
+5	Crypto For All	Economic	16
+6	End World Hunger	Foreign Policy	15
+7	Crypto For All	Economic	14
+8	Crypto For All	Economic	13
+9	Religious Freedom	Social	12
+10	End all Wars	Foreign Policy	11
+11	Crypto For All	Economic	10
+12	End all Wars	Foreign Policy	9
+13	End all Wars	Foreign Policy	8
+14	Religious Freedom	Social	7
+15	End World Hunger	Foreign Policy	6
+16	End all Wars	Foreign Policy	5
+17	Religious Freedom	Social	4
+18	End World Hunger	Foreign Policy	3
+19	End all Wars	Foreign Policy	2
+20	Crypto For All	Economic	1
+\.
+
+
+--
+-- TOC entry 3377 (class 0 OID 41405)
+-- Dependencies: 218
+-- Data for Name: pacs_voters; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pacs_voters (voter_id, pac_id) FROM stdin;
+1	1
+2	2
+3	3
+4	4
+5	5
+6	1
+7	2
+8	3
+9	4
+11	5
+12	5
+13	4
+14	3
+15	2
+16	1
+17	1
+18	3
+19	5
+20	4
+10	2
+\.
+
+
+--
+-- TOC entry 3379 (class 0 OID 49398)
+-- Dependencies: 220
+-- Data for Name: voters; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.voters (id, name, age) FROM stdin;
+1	William Farmer	30
+2	Laura Hurst MD	34
+3	Kelly Roberts	71
+4	Brenda Larsen	45
+5	Allen Castillo	55
+6	Joshua Mccullough	41
+8	Manuel Gomez	70
+9	Alexandria Gardner	51
+10	Alicia Taylor	34
+11	Mitchell Evans	73
+12	Matthew Petersen	56
+13	Amanda Fry	30
+15	Pamela Dudley	78
+17	Andrew Morales	70
+18	Jesse Petty	28
+19	Joseph Edwards	29
+20	Steven Farrell	56
+7	Natalie Spears	24
+14	Victoria Jackson	23
+16	Sarah Perez	20
+\.
+
+
+--
+-- TOC entry 3393 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: accounts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.accounts_id_seq', 151, true);
+
+
+--
+-- TOC entry 3394 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: ballots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.ballots_id_seq', 200, true);
+
+
+--
+-- TOC entry 3395 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: candidates_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.candidates_id_seq', 12, true);
+
+
+--
+-- TOC entry 3396 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: districts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.districts_id_seq', 50, true);
+
+
+--
+-- TOC entry 3397 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: pacs_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.pacs_id_seq', 117, true);
+
+
+--
+-- TOC entry 3398 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: voters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.voters_id_seq', 550, true);
+
+
+--
+-- TOC entry 3210 (class 2606 OID 41361)
+-- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3212 (class 2606 OID 41363)
+-- Name: accounts accounts_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_username_key UNIQUE (username);
+
+
+--
+-- TOC entry 3206 (class 2606 OID 41330)
+-- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.alembic_version
+    ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
+
+
+--
+-- TOC entry 3214 (class 2606 OID 41375)
+-- Name: ballots ballots_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ballots
+    ADD CONSTRAINT ballots_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3208 (class 2606 OID 41347)
+-- Name: candidates candidates_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.candidates
+    ADD CONSTRAINT candidates_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3216 (class 2606 OID 41387)
+-- Name: districts districts_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.districts
+    ADD CONSTRAINT districts_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3222 (class 2606 OID 49414)
+-- Name: pacs pacs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pacs
+    ADD CONSTRAINT pacs_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3218 (class 2606 OID 41409)
+-- Name: pacs_voters pacs_voters_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pacs_voters
+    ADD CONSTRAINT pacs_voters_pkey PRIMARY KEY (voter_id, pac_id);
+
+
+--
+-- TOC entry 3220 (class 2606 OID 49405)
+-- Name: voters voters_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.voters
+    ADD CONSTRAINT voters_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3223 (class 2606 OID 49418)
+-- Name: accounts accounts_voter_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.accounts
+    ADD CONSTRAINT accounts_voter_id_fkey FOREIGN KEY (voter_id) REFERENCES public.voters(id);
+
+
+--
+-- TOC entry 3224 (class 2606 OID 49435)
+-- Name: ballots ballots_voter_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.ballots
+    ADD CONSTRAINT ballots_voter_id_fkey FOREIGN KEY (voter_id) REFERENCES public.voters(id);
+
+
+--
+-- TOC entry 3225 (class 2606 OID 49440)
+-- Name: districts districts_voter_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.districts
+    ADD CONSTRAINT districts_voter_id_fkey FOREIGN KEY (voter_id) REFERENCES public.voters(id);
+
+
+--
+-- TOC entry 3228 (class 2606 OID 49445)
+-- Name: pacs pacs_voter_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pacs
+    ADD CONSTRAINT pacs_voter_id_fkey FOREIGN KEY (voter_id) REFERENCES public.voters(id);
+
+
+--
+-- TOC entry 3226 (class 2606 OID 49423)
+-- Name: pacs_voters pacs_voters_pac_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pacs_voters
+    ADD CONSTRAINT pacs_voters_pac_id_fkey FOREIGN KEY (pac_id) REFERENCES public.pacs(id);
+
+
+--
+-- TOC entry 3227 (class 2606 OID 49428)
+-- Name: pacs_voters pacs_voters_voter_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.pacs_voters
+    ADD CONSTRAINT pacs_voters_voter_id_fkey FOREIGN KEY (voter_id) REFERENCES public.voters(id);
+
+
+-- Completed on 2022-08-03 12:49:41 UTC
+
+--
+-- PostgreSQL database dump complete
+--
+
