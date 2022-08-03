@@ -12,8 +12,9 @@ class Account(db.Model):
     voter_id = db.Column(db.Integer, db.ForeignKey(
         'voters.id'), nullable=False)
 
-    def __init__(self, username: str, party_affiliation: str, voter_id: int):
+    def __init__(self, username: str, password: str, party_affiliation: str, voter_id: int):
         self.username = username
+        self.password = password
         self.party_affiliation = party_affiliation
         self.voter_id = voter_id
 
@@ -94,6 +95,7 @@ class Voter(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(128), nullable=False)
     age = db.Column(db.Integer, nullable=False)
+    account = db.relationship('Account', backref='voter', cascade="all,delete")
 
     def __init__(self, name: str, age: int):
         self.name = name
