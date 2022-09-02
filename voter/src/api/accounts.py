@@ -42,7 +42,7 @@ def create():
     a = Account(
         username=request.json['username'],
         password=scramble(request.json['password']),
-        party_affiliation=(request.json['party_affliation']),
+        party_affiliation=(request.json['party_affiliation']),
         voter_id=(request.json['voter_id'])
     )
     db.session.add(a)  # prepare CREATE statement
