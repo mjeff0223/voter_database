@@ -22,7 +22,7 @@ class Account(db.Model):
         return {
             'id': self.id,
             'username': self.username,
-            'party_affliation': self.party_affiliation,
+            'party_affilliation': self.party_affiliation,
             'voter_id': self.voter_id
         }
 
